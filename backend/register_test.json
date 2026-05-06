@@ -1,0 +1,14 @@
+{
+  "email": "test_run_1@example.com",
+  "password": "password123",
+  "profile": {
+    "name": "Test User",
+    "weight": 70,
+    "height": 170,
+    "age": 25,
+    "gender": "male",
+    "goal": "loss",
+    "preference": { "activity": "light" }
+  }
+}
+
