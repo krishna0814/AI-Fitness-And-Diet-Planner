@@ -4,3 +4,9 @@ dist/
 build/
 **pycache**/
 *.log
+node_modules/ 
+.env 
+dist/ 
+build/ 
+__pycache__/ 
+*.log 
