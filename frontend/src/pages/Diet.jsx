@@ -15,7 +15,7 @@ const Diet = () => {
   const [veg, setVeg] = useState(false);
   const [timeframe, setTimeframe] = useState('day'); // day/week/month
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const hasFetched = useRef(false);
 
@@ -37,7 +37,8 @@ const Diet = () => {
     try {
       console.log('📡 Calling backend AI proxy:', { profile: user.profile, veg, activity: 'light' });
       
-      const { data } = await axios.post(`${API_URL}/api/ai/recommend-diet`, {
+      const API = import.meta.env.VITE_API_URL;
+      const { data } = await axios.post(`${API}/api/ai/recommend-diet`, {
         profile: user.profile,
         veg,
         activity: 'light'

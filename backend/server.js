@@ -1,4 +1,4 @@
-require('dotenv').config({ path: './.env' });
+require('dotenv').config();
 console.log('🔥 ENV DEBUG - MONGO_URI:', process.env.MONGO_URI ? process.env.MONGO_URI.substring(0, 30) + '...' : 'MISSING');
 
 const express = require('express');
@@ -23,8 +23,8 @@ mongoose.connect(process.env.MONGO_URI)
     
     // Middleware AFTER DB
     app.use(helmet());
-    app.use(cors({ 
-      origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'], 
+    app.use(cors({
+      origin: "https://ai-fitness-and-diet-planner.vercel.app",
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization']
@@ -49,8 +49,8 @@ mongoose.connect(process.env.MONGO_URI)
     
     // Start anyway for UI demo
     app.use(helmet());
-    app.use(cors({ 
-      origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'], 
+    app.use(cors({
+      origin: "https://ai-fitness-and-diet-planner.vercel.app",
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization']

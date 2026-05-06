@@ -2,7 +2,10 @@ import { createContext, useContext, useEffect, useState, useCallback } from 'rea
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 
+const API = import.meta.env.VITE_API_URL;
+
 const AuthContext = createContext();
+
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
@@ -20,7 +23,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const response = await axios.post(`${API}/api/auth/login`, { email, password });
       const { token: newToken, user: userData } = response.data;
       
       localStorage.setItem('token', newToken);
@@ -40,7 +43,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (formData) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', formData);
+      const response = await axios.post(`${API}/api/auth/register`, formData);
       const { token: newToken, user: userData } = response.data;
       
       localStorage.setItem('token', newToken);
@@ -60,7 +63,7 @@ export const AuthProvider = ({ children }) => {
 
   const updateProfile = async (profileData) => {
     try {
-      const response = await axios.put('http://localhost:5000/api/user/profile', { profile: profileData });
+      const response = await axios.put(`${API}/api/user/profile`, { profile: profileData });
       setUser({ ...user, profile: profileData });
       toast.success('Profile updated successfully! ✅');
       return response.data;
@@ -85,7 +88,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     try {
       if (token) {
-        const response = await axios.get('http://localhost:5000/api/auth/me');
+        const response = await axios.get(`${API}/api/auth/me`);
         console.log('USER ME RESPONSE:', response.data);
         setUser(response.data);
         setIsAuthenticated(true);
