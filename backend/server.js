@@ -23,12 +23,9 @@ mongoose.connect(process.env.MONGO_URI)
     
     // Middleware AFTER DB
     app.use(helmet());
-    app.use(cors({
-      origin: "https://ai-fitness-and-diet-planner.vercel.app",
-      credentials: true,
-      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization']
-    }));
+    // Use central production CORS config
+    app.use(require('./middleware/cors'));
+
     app.use(express.json({ limit: '10mb' }));
     app.use('/api', rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }));
 
@@ -39,9 +36,10 @@ mongoose.connect(process.env.MONGO_URI)
     app.use('/api/ai', aiRoutes);
 
     app.listen(PORT, () => {
-      console.log(`🚀 Backend LIVE: http://localhost:${PORT}`);
+      console.log(`🚀 Backend LIVE: port ${PORT}`);
       console.log('✅ Login/register/AI proxy ready!');
     });
+
   })
   .catch((err) => {
     console.error('❌ MongoDB FAILED:', err.message);
@@ -61,8 +59,9 @@ mongoose.connect(process.env.MONGO_URI)
     app.use('/api/user', userRoutes);
     
     app.listen(PORT, () => {
-      console.log(`🚀 Backend MOCK LIVE: http://localhost:${PORT}`);
+      console.log(`🚀 Backend MOCK LIVE: port ${PORT}`);
       console.log('✅ UI Demo working');
     });
+
   });
 

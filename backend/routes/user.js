@@ -90,9 +90,12 @@ router.get('/progress', authMiddleware, async (req, res) => {
 router.get('/ai/diet', authMiddleware, async (req, res) => {
   try {
     const { calories, veg } = req.query;
-    const aiUrl = process.env.AI_SERVICE_URL || 'http://localhost:5001';
+    const aiUrl = process.env.AI_SERVICE_URL;
+    if (!aiUrl) {
+      return res.status(500).json({ error: 'AI_SERVICE_URL not configured' });
+    }
     
-    const response = await axios.get(`${aiUrl}/recommend-diet`, {
+    const response = await axios.get(`${aiUrl}/recommend-diet`,
       params: { calories: calories || 2000, veg }
     });
     
@@ -113,7 +116,10 @@ router.get('/ai/workout', authMiddleware, async (req, res) => {
     const user = await User.findById(req.user.id);
     const { type = user.profile.preference.workout || 'home' } = req.query;
     
-    const aiUrl = process.env.AI_SERVICE_URL || 'http://localhost:5001';
+    const aiUrl = process.env.AI_SERVICE_URL;
+    if (!aiUrl) {
+      return res.status(500).json({ error: 'AI_SERVICE_URL not configured' });
+    }
     const response = await axios.get(`${aiUrl}/recommend-workout`, {
       params: { 
         goal: user.profile.goal, 

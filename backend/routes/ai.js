@@ -14,7 +14,12 @@ router.post('/recommend-diet', async (req, res) => {
       return res.status(400).json({ error: 'profile is required' });
     }
 
-    const aiResponse = await axios.get('http://localhost:5001/recommend-diet', {
+    const aiUrl = process.env.AI_SERVICE_URL;
+    if (!aiUrl) {
+      return res.status(500).json({ error: 'AI_SERVICE_URL not configured' });
+    }
+
+    const aiResponse = await axios.get(`${aiUrl}/recommend-diet`, {
       params: {
         weight: profile.weight ?? 70,
         height: profile.height ?? 170,
