@@ -2,78 +2,37 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
 const mongoose = require('mongoose');
-
-const authRoutes = require('./routes/auth');
-const userRoutes = require('./routes/user');
-const aiRoutes = require('./routes/ai');
 
 const app = express();
 
 const PORT = process.env.PORT || 5000;
 
 
-// ====================================
-// CORS
-// ====================================
-
-app.use(cors({
-  origin: [
-    'http://localhost:5173',
-    'https://ai-fitness-and-diet-planner.vercel.app'
-  ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
-
-// ====================================
+// ====================
 // MIDDLEWARE
-// ====================================
+// ====================
 
-app.use(helmet());
+app.use(cors());
 
-app.use(express.json({
-  limit: '10mb'
-}));
-
-app.use(
-  '/api',
-  rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100
-  })
-);
+app.use(express.json());
 
 
-// ====================================
+// ====================
 // TEST ROUTE
-// ====================================
+// ====================
 
 app.get('/', (req, res) => {
   res.json({
     success: true,
-    message: 'Fitness Backend Ready'
+    message: 'Backend Working'
   });
 });
 
 
-// ====================================
-// ROUTES
-// ====================================
-
-app.use('/api/auth', authRoutes);
-
-app.use('/api/user', userRoutes);
-
-app.use('/api/ai', aiRoutes);
-
-
-// ====================================
-// DATABASE + SERVER
-// ====================================
+// ====================
+// DATABASE
+// ====================
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
@@ -82,15 +41,15 @@ mongoose.connect(process.env.MONGO_URI)
 
     app.listen(PORT, () => {
       console.log(
-        `🚀 Server running on port ${PORT}`
+        `🚀 Server running on ${PORT}`
       );
     });
 
   })
   .catch((err) => {
 
-    console.error(
-      '❌ MongoDB Error:',
+    console.log(
+      'Mongo Error:',
       err.message
     );
 
