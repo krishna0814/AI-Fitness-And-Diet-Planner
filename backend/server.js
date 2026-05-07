@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 
 // ROUTES
 const authRoutes = require('./routes/auth');
+const aiRoutes = require('./routes/ai');
 
 const app = express();
 
@@ -56,6 +57,13 @@ app.use('/api/auth', authRoutes);
 
 
 // ====================================
+// AI ROUTES
+// ====================================
+
+app.use('/api/ai', aiRoutes);
+
+
+// ====================================
 // DATABASE CONNECTION
 // ====================================
 
@@ -67,7 +75,7 @@ mongoose.connect(process.env.MONGO_URI)
     app.listen(PORT, () => {
 
       console.log(
-        `🚀 Server running on ${PORT}`
+        `🚀 Server running on port ${PORT}`
       );
 
     });
